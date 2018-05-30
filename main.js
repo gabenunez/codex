@@ -13,3 +13,12 @@ client.on('message', msg => {
 });
 
 client.login(config.bot_token);
+
+/*
+    Give book suggestion based on provided genre
+
+    Steps:
+    1. Provide random book w/ book cover, title, rating, and summary
+    2. Emojis attached to it with a down and up arrow to move to the next book and keep the book.
+    3. If the user presses the thumbs up emoji, keep the book and end the session, otherwise, move to next book or end session based on time.
+*/
