@@ -10,8 +10,9 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Poggers!');
+
+  // Checks for prefix and if the message author is a bot.
+  if(!msg.content.startsWith(prefix) || msg.author.bot) return;
   }
 });
 
