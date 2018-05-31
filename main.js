@@ -32,6 +32,11 @@ client.on('message', msg => {
         msg.reply('ping');
         break;
 
+/*    case "example":
+        let [age, occupation] = args;
+        msg.channel.send(`Hello ${msg.author.username}, I see you are ${age} and currently work as an ${occupation}!`);
+        break;
+*/
     }
   }
 
