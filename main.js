@@ -19,6 +19,24 @@ client.on('message', msg => {
 
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
+
+  if(msg.channel.name === 'books') {
+
+    switch(cmd) {
+
+      case "ping":
+        msg.reply('pong');
+        break;
+
+      case "pong":
+        msg.reply('ping');
+        break;
+
+    }
+  }
+
+  if(msg.channel.type === 'dm') {
+    msg.reply('Please don\'t private message me. Ask me in the #books channel!');
   }
 });
 
