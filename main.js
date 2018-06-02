@@ -27,6 +27,9 @@ client.on('message', msg => {
   }
 
   if(msg.channel.name === 'books') {
+  function sendErrorMessage(message) {
+    msg.reply(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+  }
 
     switch(cmd) {
 
