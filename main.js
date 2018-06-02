@@ -41,6 +41,18 @@ client.on('message', msg => {
         amountOfDice = Number(amountOfDice);
         typeOfDie = Number(typeOfDie.replace(/\D/g,''));
 
+        // Error catching for text-only entries, amount of dice rolled, and type of dice.
+        if(amountOfDice === false || typeOfDie == false) {
+          sendErrorMessage('An argument doesn\'t have a number!');
+          return;
+        } else if (amountOfDice > 100) {
+          sendErrorMessage('You can\'t roll a die more than 100 times.');
+          return;
+        } else if (typeOfDie > 1000) {
+          sendErrorMessage('You can\'t roll anything higher than a d1000.');
+          return;
+        }
+
         for (let i = 0; i < amountOfDice ; i++) {
           diceRolls.push(Math.floor(Math.random() * typeOfDie) + 1);
         }
