@@ -24,8 +24,24 @@ client.on('message', msg => {
 
     switch(cmd) {
 
-      case "ping":
-        msg.reply('pong');
+      case "roll":
+        let [amountOfDice, typeOfDie] = args;
+        let diceRolls = [], diceMessage = "", diceTotal = 0;
+
+        amountOfDice = Number(amountOfDice);
+        typeOfDie = Number(typeOfDie.replace(/\D/g,''));
+
+        for (let i = 0; i < amountOfDice ; i++) {
+          diceRolls.push(Math.floor(Math.random() * typeOfDie) + 1);
+        }
+        
+        diceRolls.forEach((num, index) => {
+          diceMessage += `${num}` + (index >= amountOfDice - 1 ? '' : ', ');
+          diceTotal += num;
+        });
+
+        msg.channel.send(`**Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal Rolled: ${diceTotal}`);
+
         break;
 
       case "pong":
