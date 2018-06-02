@@ -35,6 +35,8 @@ client.on('message', msg => {
     switch(cmd) {
 
       case "roll":
+        // TODO: Need to add the ability to "add" or "subtract". i.e: 4d6 +4
+
         let [amountOfDice, typeOfDie] = args;
         let diceRolls = [], diceMessage = "", diceTotal = 0;
 
