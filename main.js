@@ -26,10 +26,11 @@ client.on('message', msg => {
     msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
   }
 
-  if(msg.channel.name === 'books') {
   function sendErrorMessage(message) {
     msg.reply(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
   }
+
+  if(msg.channel.name === 'codex') {
 
     switch(cmd) {
 
