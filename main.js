@@ -20,6 +20,12 @@ client.on('message', msg => {
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
 
+  // Universal Functions
+
+  function sendChannelMessage(message) {
+    msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+  }
+
   if(msg.channel.name === 'books') {
 
     switch(cmd) {
@@ -40,7 +46,7 @@ client.on('message', msg => {
           diceTotal += num;
         });
 
-        msg.channel.send(`**Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal Rolled: ${diceTotal}`);
+        sendChannelMessage(`**Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal Rolled: ${diceTotal}`);
 
         break;
 
