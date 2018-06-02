@@ -62,7 +62,7 @@ client.on('message', msg => {
           diceTotal += num;
         });
 
-        sendChannelMessage(`**:game_die: Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal Combined: ${diceTotal}`);
+        sendChannelMessage(`**:game_die: Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal: ${diceTotal}`);
 
         break;
 
