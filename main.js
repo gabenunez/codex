@@ -27,7 +27,11 @@ client.on('message', msg => {
   }
 
   function sendErrorMessage(message) {
-    msg.reply(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+    msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
+  }
+
+  function logSuccess(message) {
+    console.log('Success: ' + message);
   }
 
   if(msg.channel.name === 'codex') {
