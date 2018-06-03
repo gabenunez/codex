@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
+const rp = require('request-promise');
 const client = new Discord.Client();
 const config = require("./config.json");
 const prefix = "$";
+const apiBaseUrl = 'http://dnd5eapi.co/api/';
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -72,8 +74,50 @@ client.on('message', msg => {
 
         break;
 
-      case "pong":
-        msg.reply('ping');
+      case "spell":
+
+        // TODO: Update concats to ES6 formatting, ef these +s
+        
+        let [spell] = args;
+
+        let spellSearch = {
+          uri: apiBaseUrl + 'spells/?name=Acid+Arrow',
+          headers: {
+              'User-Agent': 'Request-Promise'
+          },
+          json: true // Automatically parses the JSON string in the response
+        };
+      
+        rp(spellSearch)
+          .then(function (spellSearch) {
+            if (spellSearch.count > 0 && spellSearch.results[0].url) {
+              logSuccess('Spell URL Found: ' + spellSearch.results[0].url);
+
+              let spell = {
+                uri: spellSearch.results[0].url,
+                headers: {
+                  'User-Agent': 'Request-Promise'
+                },
+                json: true 
+              }
+
+              rp(spell)
+                .then(function (spell) {
+                  logSuccess('Found Spell Info on ' + spell.name);
+                })
+                .catch(function (error) {
+                  sendChannelMessage('Wow. Something went wrong... that I\'m not too sure of.');
+                })
+
+
+            } else {
+              sendErrorMessage('Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
+            }
+          })
+          .catch(function (error) {
+            sendErrorMessage(error);
+          });
+        
         break;
 
 /*    case "example":
