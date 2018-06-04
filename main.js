@@ -33,7 +33,7 @@ client.on('message', msg => {
   }
 
   function logSuccess(message) {
-    console.log('Success: ' + message);
+    console.log(`Success: ${message}`);
   }
 
   if(msg.channel.name === 'codex') {
@@ -66,7 +66,7 @@ client.on('message', msg => {
         }
         
         diceRolls.forEach((num, index) => {
-          diceMessage += `${num}` + (index >= amountOfDice - 1 ? '' : ', ');
+          diceMessage += `${num} ${index >= amountOfDice - 1 ? '' : ', '}`;
           diceTotal += num;
         });
 
@@ -75,8 +75,6 @@ client.on('message', msg => {
         break;
 
       case "spell":
-
-        // TODO: Update concats to ES6 formatting, ef these +s
         formatedSpell = "";
 
         args.forEach( (arg, index, array) => {
@@ -87,7 +85,7 @@ client.on('message', msg => {
         });
 
         let spellSearch = {
-          uri: apiBaseUrl + `spells/?name=${formatedSpell}`,
+          uri: `${apiBaseUrl}spells/?name=${formatedSpell}`,
           headers: {
               'User-Agent': 'Request-Promise'
           },
@@ -97,7 +95,7 @@ client.on('message', msg => {
         rp(spellSearch)
           .then(function (spellSearch) {
             if (spellSearch.count > 0 && spellSearch.results[0].url) {
-              logSuccess('Spell URL Found: ' + spellSearch.results[0].url);
+              logSuccess(`Spell URL Found: ${spellSearch.results[0].url}`);
 
               let spell = {
                 uri: spellSearch.results[0].url,
@@ -109,7 +107,7 @@ client.on('message', msg => {
 
               rp(spell)
                 .then(function (spell) {
-                  logSuccess('Found Spell Info on ' + spell.name);
+                  logSuccess(`Found Spell Info on ${spell.name}`);
                 })
                 .catch(function (error) {
                   sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
