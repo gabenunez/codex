@@ -106,7 +106,7 @@ client.on('message', msg => {
                   logSuccess('Found Spell Info on ' + spell.name);
                 })
                 .catch(function (error) {
-                  sendChannelMessage('Wow. Something went wrong... that I\'m not too sure of.');
+                  sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
                 })
 
 
