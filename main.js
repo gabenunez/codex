@@ -74,7 +74,8 @@ client.on('message', msg => {
 
       case "spell":
         formatedSpell = "";
-
+        
+        // Converts all command arguments to a usable format (i.e. 'this+is+my+command')
         args.forEach( (arg, index, array) => {
           let indivWord = arg.toLowerCase();
           indivWord = indivWord[0].toUpperCase() + indivWord.substr(1);
@@ -82,14 +83,16 @@ client.on('message', msg => {
           formatedSpell += `${indivWord}${index !== array.length - 1 ? '+' : ''}`;
         });
 
+        
         let spellSearch = {
           uri: `${config.apiBaseUrl}spells/?name=${formatedSpell}`,
           headers: {
               'User-Agent': 'Request-Promise'
           },
-          json: true // Automatically parses the JSON string in the response
+          json: true
         };
       
+        // API Calls and Logic w/ Promises
         rp(spellSearch)
           .then(function (spellSearch) {
             if (spellSearch.count > 0 && spellSearch.results[0].url) {
@@ -136,12 +139,3 @@ client.on('message', msg => {
 });
 
 client.login(config.bot_token);
-
-/*
-    Give book suggestion based on provided genre
-
-    Steps:
-    1. Provide random book w/ book cover, title, rating, and summary
-    2. Emojis attached to it with a down and up arrow to move to the next book and keep the book.
-    3. If the user presses the thumbs up emoji, keep the book and end the session, otherwise, move to next book or end session based on time.
-*/
