@@ -2,8 +2,6 @@ const Discord = require('discord.js');
 const rp = require('request-promise');
 const client = new Discord.Client();
 const config = require("./config.json");
-const prefix = "$";
-const apiBaseUrl = 'http://dnd5eapi.co/api/';
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -14,10 +12,10 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // Checks for prefix and if the message author is a bot.
-  if(!msg.content.startsWith(prefix) || msg.author.bot) return;
+  if(!msg.content.startsWith(config.prefix) || msg.author.bot) return;
 
   // Creates arguments by slicking em up, trimming (removing spaces), then getting em into an array.
-  const args = msg.content.slice(prefix.length).trim().split(/ +/g);
+  const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
 
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
@@ -85,7 +83,7 @@ client.on('message', msg => {
         });
 
         let spellSearch = {
-          uri: `${apiBaseUrl}spells/?name=${formatedSpell}`,
+          uri: `${config.apiBaseUrl}spells/?name=${formatedSpell}`,
           headers: {
               'User-Agent': 'Request-Promise'
           },
