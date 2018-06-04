@@ -1,22 +1,11 @@
 const config = require("../config.json");
 const rp = require('request-promise');
+const messages = require('../modules/messages.js');
 
 module.exports = {
     name: 'spell',
     description: 'Find a spell in the spell book!',
     execute(msg, args) {
-
-    function sendChannelMessage(message) {
-        msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
-        }
-    
-        function sendErrorMessage(message) {
-        msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
-        }
-    
-        function logSuccess(message) {
-        console.log(`Success: ${message}`);
-        }
 
         formatedSpell = "";
         
@@ -40,7 +29,7 @@ module.exports = {
         rp(spellSearch)
             .then(function (spellSearch) {
             if (spellSearch.count > 0 && spellSearch.results[0].url) {
-                logSuccess(`Spell URL Found: ${spellSearch.results[0].url}`);
+                messages.logSuccess(msg, `Spell URL Found: ${spellSearch.results[0].url}`);
 
                 let spell = {
                 uri: spellSearch.results[0].url,
@@ -52,18 +41,18 @@ module.exports = {
 
                 rp(spell)
                 .then(function (spell) {
-                    logSuccess(`Found Spell Info on ${spell.name}`);
+                    messages.logSuccess(msg, `Found Spell Info on ${spell.name}`);
                 })
                 .catch(function (error) {
-                    sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
+                    messages.sendErrorMessage(msg, 'Wow. Something went wrong... that I\'m not too sure of.');
                 })
 
             } else {
-                sendErrorMessage('Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
+                messages.sendErrorMessage(msg, 'Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
             }
             })
             .catch(function (error) {
-                sendErrorMessage(error);
+                messages.sendErrorMessage(msg, error);
             });
     },
 };

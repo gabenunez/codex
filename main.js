@@ -32,25 +32,14 @@ client.on('message', msg => {
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
 
-  function sendChannelMessage(message) {
-    msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
-  }
-
-  function sendErrorMessage(message) {
-    msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
-  }
-
-  function logSuccess(message) {
-    console.log(`Success: ${message}`);
-  }
-
+  const messages = require('./modules/messages.js');
   if(msg.channel.name === 'codex') {
     if (!client.commands.has(cmd)) return;
     try {
         client.commands.get(cmd).execute(msg, args);
     }
     catch (error) {
-      sendErrorMessage(error + "error");
+      messages.sendErrorMessage(error + "error");
     }
   }
 
