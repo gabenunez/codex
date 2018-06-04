@@ -77,11 +77,17 @@ client.on('message', msg => {
       case "spell":
 
         // TODO: Update concats to ES6 formatting, ef these +s
-        
-        let [spell] = args;
+        formatedSpell = "";
+
+        args.forEach( (arg, index, array) => {
+          let indivWord = arg.toLowerCase();
+          indivWord = indivWord[0].toUpperCase() + indivWord.substr(1);
+          
+          formatedSpell += `${indivWord}${index !== array.length - 1 ? '+' : ''}`;
+        });
 
         let spellSearch = {
-          uri: apiBaseUrl + 'spells/?name=Acid+Arrow',
+          uri: apiBaseUrl + `spells/?name=${formatedSpell}`,
           headers: {
               'User-Agent': 'Request-Promise'
           },
