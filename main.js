@@ -1,7 +1,21 @@
 const Discord = require('discord.js');
-const rp = require('request-promise');
-const client = new Discord.Client();
 const config = require("./config.json");
+const rp = require('request-promise');
+const fs = require('fs');
+
+const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
+// https://discordjs.guide/#/command-handling/
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+
+  // set a new item in the Collection
+  // with the key as the command name and the value as the exported module
+  client.commands.set(command.name, command);
+}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -10,7 +24,6 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-
   // Checks for prefix and if the message author is a bot.
   if(!msg.content.startsWith(config.prefix) || msg.author.bot) return;
 
@@ -20,116 +33,13 @@ client.on('message', msg => {
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
 
-  // Universal Functions
-
-  function sendChannelMessage(message) {
-    msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
-  }
-
-  function sendErrorMessage(message) {
-    msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
-  }
-
-  function logSuccess(message) {
-    console.log(`Success: ${message}`);
-  }
-
   if(msg.channel.name === 'codex') {
-
-    switch(cmd) {
-
-      case "roll":
-        // TODO: Need to add the ability to "add" or "subtract". i.e: 4d6 +4
-
-        let [amountOfDice, typeOfDie] = args;
-        let diceRolls = [], diceMessage = "", diceTotal = 0;
-
-        amountOfDice = Number(amountOfDice);
-        typeOfDie = Number(typeOfDie.replace(/\D/g,''));
-
-        // Error catching for text-only entries, amount of dice rolled, and type of dice.
-        if(amountOfDice === false || typeOfDie == false) {
-          sendErrorMessage('An argument doesn\'t have a number!');
-          return;
-        } else if (amountOfDice > 100) {
-          sendErrorMessage('You can\'t roll a die more than 100 times.');
-          return;
-        } else if (typeOfDie > 1000) {
-          sendErrorMessage('You can\'t roll anything higher than a d1000.');
-          return;
-        }
-
-        for (let i = 0; i < amountOfDice ; i++) {
-          diceRolls.push(Math.floor(Math.random() * typeOfDie) + 1);
-        }
-        
-        diceRolls.forEach((num, index) => {
-          diceMessage += `${num} ${index >= amountOfDice - 1 ? '' : ', '}`;
-          diceTotal += num;
-        });
-
-        sendChannelMessage(`**:game_die: Dice Rolled (${amountOfDice} d${typeOfDie}):** \n\n\`${diceMessage}\` \n\nTotal: ${diceTotal}`);
-
-        break;
-
-      case "spell":
-        formatedSpell = "";
-        
-        // Converts all command arguments to a usable format (i.e. 'this+is+my+command')
-        args.forEach( (arg, index, array) => {
-          let indivWord = arg.toLowerCase();
-          indivWord = indivWord[0].toUpperCase() + indivWord.substr(1);
-          
-          formatedSpell += `${indivWord}${index !== array.length - 1 ? '+' : ''}`;
-        });
-
-        
-        let spellSearch = {
-          uri: `${config.apiBaseUrl}spells/?name=${formatedSpell}`,
-          headers: {
-              'User-Agent': 'Request-Promise'
-          },
-          json: true
-        };
-      
-        // API Calls and Logic w/ Promises
-        rp(spellSearch)
-          .then(function (spellSearch) {
-            if (spellSearch.count > 0 && spellSearch.results[0].url) {
-              logSuccess(`Spell URL Found: ${spellSearch.results[0].url}`);
-
-              let spell = {
-                uri: spellSearch.results[0].url,
-                headers: {
-                  'User-Agent': 'Request-Promise'
-                },
-                json: true 
-              }
-
-              rp(spell)
-                .then(function (spell) {
-                  logSuccess(`Found Spell Info on ${spell.name}`);
-                })
-                .catch(function (error) {
-                  sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
-                })
-
-
-            } else {
-              sendErrorMessage('Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
-            }
-          })
-          .catch(function (error) {
-            sendErrorMessage(error);
-          });
-        
-        break;
-
-/*    case "example":
-        let [age, occupation] = args;
-        msg.channel.send(`Hello ${msg.author.username}, I see you are ${age} and currently work as an ${occupation}!`);
-        break;
-*/
+    if (!client.commands.has(cmd)) return;
+    try {
+        client.commands.get(cmd).execute(msg, args);
+    }
+    catch (error) {
+      messages.sendErrorMessage(error);
     }
   }
 
