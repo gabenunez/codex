@@ -1,3 +1,6 @@
+const config = require("../config.json");
+const rp = require('request-promise');
+
 module.exports = {
     name: 'spell',
     description: 'Find a spell in the spell book!',

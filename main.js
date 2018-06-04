@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const config = require("./config.json");
-const rp = require('request-promise');
 const fs = require('fs');
 
 const client = new Discord.Client();
@@ -51,7 +50,7 @@ client.on('message', msg => {
         client.commands.get(cmd).execute(msg, args);
     }
     catch (error) {
-      messages.sendErrorMessage(error);
+      sendErrorMessage(error + "error");
     }
   }
 
