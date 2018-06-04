@@ -2,6 +2,18 @@ module.exports = {
     name: 'roll',
     description: 'Roll a dice!',
     execute(msg, args) {
+
+        function sendChannelMessage(message) {
+            msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+          }
+        
+          function sendErrorMessage(message) {
+            msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
+          }
+        
+          function logSuccess(message) {
+            console.log(`Success: ${message}`);
+          }
         // TODO: Need to add the ability to "add" or "subtract". i.e: 4d6 +4
         let [amountOfDice, typeOfDie] = args;
         let diceRolls = [], diceMessage = "", diceTotal = 0;

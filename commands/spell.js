@@ -2,6 +2,19 @@ module.exports = {
     name: 'spell',
     description: 'Find a spell in the spell book!',
     execute(msg, args) {
+
+    function sendChannelMessage(message) {
+        msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+        }
+    
+        function sendErrorMessage(message) {
+        msg.reply(message).then(message => console.log(`Error: ${message.content}`)).catch(console.error);
+        }
+    
+        function logSuccess(message) {
+        console.log(`Success: ${message}`);
+        }
+
         formatedSpell = "";
         
         // Converts all command arguments to a usable format (i.e. 'this+is+my+command')
