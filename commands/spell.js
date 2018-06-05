@@ -29,7 +29,7 @@ module.exports = {
         rp(spellSearch)
             .then(function (spellSearch) {
             if (spellSearch.count > 0 && spellSearch.results[0].url) {
-                messages.logSuccess(msg, `Spell URL Found: ${spellSearch.results[0].url}`);
+                messages.logSuccess(`Spell URL Found: ${spellSearch.results[0].url}`);
 
                 let spell = {
                 uri: spellSearch.results[0].url,
@@ -41,18 +41,18 @@ module.exports = {
 
                 rp(spell)
                 .then(function (spell) {
-                    messages.logSuccess(msg, `Found Spell Info on ${spell.name}`);
+                    messages.logSuccess(`Found Spell Info on ${spell.name}`);
                 })
                 .catch(function (error) {
-                    messages.sendErrorMessage(msg, 'Wow. Something went wrong... that I\'m not too sure of.');
+                    messages.sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
                 })
 
             } else {
-                messages.sendErrorMessage(msg, 'Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
+                messages.sendErrorMessage('Sorry, that spell doesn\'t exist in the 5e SRD or was typed incorrectly.');
             }
             })
             .catch(function (error) {
-                messages.sendErrorMessage(msg, error);
+                messages.sendErrorMessage(error);
             });
     },
 };
