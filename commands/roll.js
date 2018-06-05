@@ -19,14 +19,10 @@ module.exports = {
 
         // Rules and logic of dice rollin'
 
-        if (amountOfDice < 1) {
-            messages.sendErrorMessage('You can\'t roll a die less than 1 times.');
-        } else if (typeOfDie < 2) {
-            messages.sendErrorMessage('You can\'t roll a die with less than 2 sides.');
-        } else if (amountOfDice > 100) {
-            messages.sendErrorMessage('You can\'t roll a die more than 100 times.');
-        } else if (typeOfDie > 1000) {
-            messages.sendErrorMessage('You can\'t roll anything higher than a d1000.');
+        if (amountOfDice < 1 || amountOfDice > 100) {
+            messages.sendErrorMessage('You can\'t roll a die less than 1 or more than 100 times.');
+        } else if (typeOfDie < 2 || typeOfDie > 1000) {
+            messages.sendErrorMessage('You can\'t roll a die with less than 2 or more than 1000 sides.');
         } else {
             for (let i = 0; i < amountOfDice ; i++) {
                 diceRolls.push(Math.floor(Math.random() * typeOfDie) + 1);
