@@ -1,8 +1,7 @@
 module.exports = function(msg) {
-    
     // https://stackoverflow.com/a/13163075
 
-    var module = {};
+    let module = {};
 
     module.sendChannelMessage = (message) => {
         msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
@@ -19,5 +18,6 @@ module.exports = function(msg) {
     module.logError = (message) => {
         console.log(`Error: ${message}`);
     };
+
     return module;
 };
