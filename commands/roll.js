@@ -2,7 +2,7 @@ module.exports = {
     name: 'roll',
     description: 'Roll a dice!',
     execute(msg, args) {
-        const messages = require('../modules/messages.js');
+        const messages = require('../modules/messages.js')(msg);
 
         // TODO: Need to add the ability to "add" or "subtract". i.e: 4d6 +4
         let [amountOfDice, typeOfDie] = args;

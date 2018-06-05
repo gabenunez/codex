@@ -1,11 +1,11 @@
 const config = require("../config.json");
 const rp = require('request-promise');
-const messages = require('../modules/messages.js');
 
 module.exports = {
     name: 'spell',
     description: 'Find a spell in the spell book!',
     execute(msg, args) {
+        const messages = require('../modules/messages.js')(msg);
 
         formatedSpell = "";
         

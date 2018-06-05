@@ -32,14 +32,14 @@ client.on('message', msg => {
   // Removes first item from the array and Returns the item as the command.
   const cmd = args.shift().toLowerCase();
 
-  const messages = require('./modules/messages.js');
+  const messages = require('./modules/messages.js')(msg);
   if(msg.channel.name === 'codex') {
     if (!client.commands.has(cmd)) return;
     try {
         client.commands.get(cmd).execute(msg, args);
     }
     catch (error) {
-      messages.sendErrorMessage(error + "error");
+      messages.logError(error);
     }
   }
 
