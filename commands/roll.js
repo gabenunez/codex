@@ -17,7 +17,6 @@ module.exports = {
         typeOfDie = Number(typeOfDie.replace(/\D/g,''));
 
         // Rules and logic of dice rollin'
-
         if (amountOfDice < 1 || amountOfDice > 100) {
             messages.sendErrorMessage('You can\'t roll a die less than 1 or more than 100 times.');
         } else if (typeOfDie < 2 || typeOfDie > 1000) {
@@ -32,8 +31,7 @@ module.exports = {
                 diceTotal += num;
             });
             
-            // Check if any operator should be applied.
-
+            // Logic for Math operations when the parameters exist.
             if (operand) {
                 if( !/\d/.test(opNumber) ) {
                     messages.sendErrorMessage('Looks like your operational number isn\'t actually a number.');
