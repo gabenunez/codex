@@ -42,6 +42,34 @@ module.exports = {
                 rp(spell)
                 .then(function (spell) {
                     messages.logSuccess(`Found Spell Info on ${spell.name}`);
+                    messages.sendChannelMessage(
+                        {
+                        "embed": {
+                            "title": spell.name,
+                            "description": spell.desc[0],
+                            "color": 8598564,
+                            "footer": {
+                            "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+                            "text": "dnd5eapi.co - The 5th Edition Dungeons and Dragons API"
+                            },
+                            "thumbnail": {
+                            "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                            },
+                            "fields": [
+                            {
+                                "name": "Level/Casting Time",
+                                "value": `${spell.level} / ${spell.casting_time}`,
+                                "inline": true
+                            },
+                            {
+                                "name": "Page",
+                                "value": spell.page,
+                                "inline": true
+                            },
+                            ]
+                        }
+                        }
+                    )
                 })
                 .catch(function (error) {
                     messages.sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
