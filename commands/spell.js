@@ -42,28 +42,45 @@ module.exports = {
                 rp(spell)
                 .then(function (spell) {
                     messages.logSuccess(`Found Spell Info on ${spell.name}`);
+
+                    let imagesURL = 'https://raw.githubusercontent.com/gabenunez/codex/master/assets/images';
                     messages.sendChannelMessage(
                         {
                         "embed": {
                             "title": spell.name,
-                            "description": spell.desc[0],
+                            "description": `${spell.desc[0]} *(${spell.page.toUpperCase()})*`,
                             "color": 8598564,
                             "footer": {
-                            "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-                            "text": "dnd5eapi.co - The 5th Edition Dungeons and Dragons API"
+                            "icon_url": `${imagesURL}/info.jpg`,
+                            "text": "D&D info provided by dnd5eapi.co | Images provided by game-icons.net"
                             },
                             "thumbnail": {
-                            "url": "https://cdn.discordapp.com/embed/avatars/0.png"
+                            "url": `${imagesURL}/spells/${spell.school.name.toLowerCase()}.png`,
                             },
                             "fields": [
                             {
-                                "name": "Level/Casting Time",
-                                "value": `${spell.level} / ${spell.casting_time}`,
+                                "name": "Level:",
+                                "value": `${spell.level}`,
                                 "inline": true
                             },
                             {
-                                "name": "Page",
-                                "value": spell.page,
+                                "name": "Range:",
+                                "value": `${spell.range}`,
+                                "inline": true
+                            },
+                            {
+                                "name": "Casting Time:",
+                                "value": `${spell.casting_time}`,
+                                "inline": true
+                            },
+                            {
+                                "name": "Duration:",
+                                "value": `${spell.duration}`,
+                                "inline": true
+                            },
+                            {
+                                "name": "Concentration:",
+                                "value": `${spell.concentration[0].toUpperCase() + spell.concentration.slice(1)}`,
                                 "inline": true
                             },
                             ]
