@@ -4,7 +4,7 @@ module.exports = function(msg) {
     let module = {};
 
     module.sendChannelMessage = (message) => {
-        msg.channel.send(message).then(message => console.log(`Sent message: ${message.content}`)).catch(console.error);
+        msg.channel.send(message).then(message => console.log(`Sent message: ${message.embed ? message.content : 'Embed Sent'}`)).catch(console.error);
     };
 
     module.sendErrorMessage = (message) => {
