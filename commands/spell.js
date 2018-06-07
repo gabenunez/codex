@@ -63,11 +63,11 @@ module.exports = {
                         {
                         "embed": {
                             "title": spell.name,
-                            "description": `${convertArrayforEmbed(spell.desc, true)} *(${spell.page.toUpperCase()})*`,
+                            "description": `${convertArrayforEmbed(spell.desc, true)} ${spell.higher_level ? '\n\nAt Higher Level:\n' +  convertArrayforEmbed(spell.higher_level) + '\n\n' : ''}`,
                             "color": 8598564,
                             "footer": {
                             "icon_url": `${imagesURL}/info.jpg`,
-                            "text": "D&D info provided by dnd5eapi.co | Images provided by game-icons.net"
+                            "text": `(${spell.page.toUpperCase()}) | D&D info provided by dnd5eapi.co | Images provided by game-icons.net`
                             },
                             "thumbnail": {
                             "url": `${imagesURL}/spells/${spell.school.name.toLowerCase()}.png`,
@@ -92,7 +92,7 @@ module.exports = {
                                 {
                                     "name": "Components:",
                                     "value": `${convertArrayforEmbed(spell.components)} ${spell.material ? '(' + spell.material + ')'  : ''}`,
-                                },
+                                }
                             ]
                         }
                         }
