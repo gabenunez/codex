@@ -20,6 +20,8 @@
   "dependencies": {
     "discord.js": "^11.3.2",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "utf8": "^3.0.0",
+    "windows-1252": "^1.0.0"
   }
 }

@@ -1,5 +1,7 @@
 const config = require("../config.json");
 const rp = require('request-promise');
+const utf8 = require('utf8');
+const windows1252 = require('windows-1252');
 
 module.exports = {
     name: 'spell',
@@ -48,6 +50,8 @@ module.exports = {
                         let embedString = '';
 
                         arrayList.forEach( (item, index, array) => {
+                            // Fixes wrong encoding found in the API (Converts windows1252 to UTF-8)
+                            item = utf8.decode(windows1252.encode(item));
                             embedString += `${item}${index !== array.length - 1 ? `${paragraphs ? '\n\n' : ', '}` : ''}`
                         });
 
