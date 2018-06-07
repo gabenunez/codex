@@ -43,12 +43,23 @@ module.exports = {
                 .then(function (spell) {
                     messages.logSuccess(`Found Spell Info on ${spell.name}`);
 
+                    // Processes arrays for the embed. Lists: Have Commas, Paragraphs: New Lines
+                    convertArrayforEmbed = (arrayList, paragraphs = false) => {
+                        let embedString = '';
+
+                        arrayList.forEach( (item, index, array) => {
+                            embedString += `${item}${index !== array.length - 1 ? `${paragraphs ? '\n\n' : ', '}` : ''}`
+                        });
+
+                        return embedString;
+                    };
+                    
                     let imagesURL = 'https://raw.githubusercontent.com/gabenunez/codex/master/assets/images';
                     messages.sendChannelMessage(
                         {
                         "embed": {
                             "title": spell.name,
-                            "description": `${spell.desc[0]} *(${spell.page.toUpperCase()})*`,
+                            "description": `${convertArrayforEmbed(spell.desc, true)} *(${spell.page.toUpperCase()})*`,
                             "color": 8598564,
                             "footer": {
                             "icon_url": `${imagesURL}/info.jpg`,
@@ -58,31 +69,26 @@ module.exports = {
                             "url": `${imagesURL}/spells/${spell.school.name.toLowerCase()}.png`,
                             },
                             "fields": [
-                            {
-                                "name": "Level:",
-                                "value": `${spell.level}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Range:",
-                                "value": `${spell.range}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Casting Time:",
-                                "value": `${spell.casting_time}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Duration:",
-                                "value": `${spell.duration}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Concentration:",
-                                "value": `${spell.concentration[0].toUpperCase() + spell.concentration.slice(1)}`,
-                                "inline": true
-                            },
+                                {
+                                    "name": "Level:",
+                                    "value": `${spell.level}`,
+                                },
+                                {
+                                    "name": "Range:",
+                                    "value": `${spell.range}`,
+                                },
+                                {
+                                    "name": "Casting Time:",
+                                    "value": `${spell.casting_time}`,
+                                },
+                                {
+                                    "name": "Duration:",
+                                    "value": `${spell.concentration === 'yes' ? 'Concentration, ' : ''}${spell.duration}`,
+                                },
+                                {
+                                    "name": "Components:",
+                                    "value": `${convertArrayforEmbed(spell.components)} ${spell.material ? '(' + spell.material + ')'  : ''}`,
+                                },
                             ]
                         }
                         }
