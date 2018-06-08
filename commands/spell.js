@@ -67,7 +67,7 @@ module.exports = {
                             "color": 8598564,
                             "footer": {
                             "icon_url": `${imagesURL}/info.jpg`,
-                            "text": `(${spell.page.toUpperCase()}) | D&D info provided by dnd5eapi.co | Images provided by game-icons.net`
+                            "text": `${spell.page.toUpperCase()} | D&D info provided by dnd5eapi.co | Images provided by game-icons.net`
                             },
                             "thumbnail": {
                             "url": `${imagesURL}/spells/${spell.school.name.toLowerCase()}.png`,
@@ -76,18 +76,22 @@ module.exports = {
                                 {
                                     "name": "Level:",
                                     "value": `${spell.level}`,
+                                    "inline": true
                                 },
                                 {
                                     "name": "Range:",
                                     "value": `${spell.range}`,
+                                    "inline": true
                                 },
                                 {
                                     "name": "Casting Time:",
                                     "value": `${spell.casting_time}`,
+                                    "inline": true
                                 },
                                 {
                                     "name": "Duration:",
                                     "value": `${spell.concentration === 'yes' ? 'Concentration, ' : ''}${spell.duration}`,
+                                    "inline": true
                                 },
                                 {
                                     "name": "Components:",
@@ -98,8 +102,8 @@ module.exports = {
                         }
                     )
                 })
-                .catch(function (error) {
-                    messages.sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.');
+                .catch( (error) => {
+                    messages.sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.').then(messages.logError(error));
                 })
 
             } else {
