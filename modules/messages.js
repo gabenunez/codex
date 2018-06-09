@@ -1,4 +1,4 @@
-module.exports = function(msg) {
+module.exports = (msg) => {
     // https://stackoverflow.com/a/13163075
 
     let module = {};
