@@ -45,6 +45,7 @@ module.exports = (msg) => {
                     messages.logSuccess(`Found Search Info on ${searchItem.name}`);
                     
                 // Processes arrays for the embed. Lists: Have Commas, Paragraphs: New Lines
+                // TODO: Add automatic recognition support, setting a parameter is barbaric and gross and I should feel bad.
                 convertArrayforEmbed = (arrayList, paragraphs = false) => {
                     let embedString = '';
 
