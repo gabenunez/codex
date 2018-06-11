@@ -26,7 +26,7 @@ client.on('message', msg => {
   // Checks for prefix and if the message author is a bot.
   if(!msg.content.startsWith(config.prefix) || msg.author.bot) return;
 
-  // Creates arguments by slicking em up, trimming (removing spaces), then getting em into an array.
+  // Creates arguments by slicing em up, trimming (removing spaces), then getting em into an array.
   const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
 
   // Removes first item from the array and Returns the item as the command.
