@@ -10,7 +10,7 @@ class Api {
 
     getApiData() {
         const messages = require('./messages')(this.msg);
-
+        const searchCategory = this.searchCategory
         let formatedTerms = "";
 
         // Converts all command arguments to a usable format (i.e. 'this+is+my+command')
@@ -22,7 +22,7 @@ class Api {
         });
 
         let termSearch = {
-            uri: `${config.apiBaseUrl}${this.searchCategory}/?name=${formatedTerms}`,
+            uri: `${config.apiBaseUrl}${searchCategory}/?name=${formatedTerms}`,
             headers: {
                 'User-Agent': 'Request-Promise'
             },
@@ -47,7 +47,9 @@ class Api {
                         .then(function(searchItem) {
                             messages.logSuccess(`Found Search Info on ${searchItem.name}`);
 
-                            const createEmbed = require('./embeds/spells');
+                            // Embed filename set to the search category 
+                            const createEmbed = require(`./embeds/${searchCategory}`);
+
                             messages.sendChannelMessage(createEmbed(searchItem));
                         })
                         .catch((error) => {
