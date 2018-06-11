@@ -1,7 +1,5 @@
 const config = require("../config.json");
 const rp = require('request-promise');
-const utf8 = require('utf8');
-const windows1252 = require('windows-1252');
 
 class Api {
     constructor(msg, args, searchCategory) {
@@ -49,62 +47,8 @@ class Api {
                         .then(function(searchItem) {
                             messages.logSuccess(`Found Search Info on ${searchItem.name}`);
 
-
-                            // Processes arrays for the embed. Lists: Have Commas, Paragraphs: New Lines
-                            // TODO: Add automatic recognition support, setting a parameter is barbaric and gross and I should feel bad.
-                            const convertArrayforEmbed = (arrayList, paragraphs = false) => {
-                                let embedString = '';
-
-                                arrayList.forEach((item, index, array) => {
-                                    // Fixes wrong encoding found in the API (Converts windows1252 to UTF-8)
-                                    item = utf8.decode(windows1252.encode(item));
-                                    embedString += `${item}${index !== array.length - 1 ? `${paragraphs ? '\n\n' : ', '}` : ''}`
-                                });
-
-                                return embedString;
-                            };
-
-                            let imagesURL = 'https://raw.githubusercontent.com/gabenunez/codex/master/assets/images';
-
-                            messages.sendChannelMessage({
-                                "embed": {
-                                    "title": searchItem.name,
-                                    "description": `${convertArrayforEmbed(searchItem.desc, true)} ${searchItem.higher_level ? '\n\nAt Higher Level:\n' +  convertArrayforEmbed(searchItem.higher_level) + '\n\n' : ''}`,
-                                    "color": 8598564,
-                                    "footer": {
-                                        "icon_url": `${imagesURL}/info.jpg`,
-                                        "text": `${searchItem.page.toUpperCase()} | D&D info provided by dnd5eapi.co | Images provided by game-icons.net`
-                                    },
-                                    "thumbnail": {
-                                        "url": `${imagesURL}/spells/${searchItem.school.name.toLowerCase()}.png`,
-                                    },
-                                    "fields": [{
-                                            "name": "Level:",
-                                            "value": `${searchItem.level}`,
-                                            "inline": true
-                                        },
-                                        {
-                                            "name": "Range:",
-                                            "value": `${searchItem.range}`,
-                                            "inline": true
-                                        },
-                                        {
-                                            "name": "Casting Time:",
-                                            "value": `${searchItem.casting_time}`,
-                                            "inline": true
-                                        },
-                                        {
-                                            "name": "Duration:",
-                                            "value": `${searchItem.concentration === 'yes' ? 'Concentration, ' : ''}${searchItem.duration}`,
-                                            "inline": true
-                                        },
-                                        {
-                                            "name": "Components:",
-                                            "value": `${convertArrayforEmbed(searchItem.components)} ${searchItem.material ? '(' + searchItem.material + ')'  : ''}`,
-                                        }
-                                    ]
-                                }
-                            })
+                            const createEmbed = require('./embeds/spells');
+                            messages.sendChannelMessage(createEmbed(searchItem));
                         })
                         .catch((error) => {
                             messages.sendErrorMessage('Wow. Something went wrong... that I\'m not too sure of.').then(messages.logError(error));

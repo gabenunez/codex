@@ -1,27 +1,13 @@
-const Api = require('../api');
-const imagesURL = 'https://raw.githubusercontent.com/gabenunez/codex/master/assets/images';
+const config = require("../../config.json");
+const embeds = require('../embeds');
 
+const imagesURL = config.imageBaseUrl;
 
 module.exports = (searchItem) => {
-    // Processes arrays for the embed.
-    // TODO: Add automatic recognition support, setting a parameter is barbaric and gross and I should feel bad.
-    const convertArrayforEmbed = (arrayList) => {
-        let embedString = '';
-
-        arrayList.forEach((item, index, array) => {
-            // Fixes wrong encoding found in the API (Converts windows1252 to UTF-8)
-            item = utf8.decode(windows1252.encode(item));
-            // Creates embed string,  Lists: Have Commas, Paragraphs: New Lines
-            embedString += `${item}${index !== array.length - 1 ? `${paragraphs ? '\n\n' : ', '}` : ''}`
-        });
-
-        return embedString;
-    };
-
-    const embed = {
+    return {
         "embed": {
             "title": searchItem.name,
-            "description": `${convertArrayforEmbed(searchItem.desc, true)} ${searchItem.higher_level ? '\n\nAt Higher Level:\n' +  convertArrayforEmbed(searchItem.higher_level) + '\n\n' : ''}`,
+            "description": `${embeds.formatArray(searchItem.desc, true)} ${searchItem.higher_level ? '\n\nAt Higher Level:\n' +  embeds.formatArray(searchItem.higher_level) + '\n\n' : ''}`,
             "color": 8598564,
             "footer": {
                 "icon_url": `${imagesURL}/info.jpg`,
@@ -52,11 +38,9 @@ module.exports = (searchItem) => {
                 },
                 {
                     "name": "Components:",
-                    "value": `${convertArrayforEmbed(searchItem.components)} ${searchItem.material ? '(' + searchItem.material + ')'  : ''}`,
+                    "value": `${embeds.formatArray(searchItem.components)} ${searchItem.material ? '(' + searchItem.material + ')'  : ''}`,
                 }
             ]
         }
-    }
-
-    return embed;
+    };
 }
